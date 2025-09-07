@@ -1,14 +1,16 @@
 package com.example.aplicativosorteiokotlin
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 
 class MainActivity : AppCompatActivity() {
     // Variáveis de pontuação
@@ -19,8 +21,23 @@ class MainActivity : AppCompatActivity() {
     private lateinit var pTimeA: TextView
     private lateinit var pTimeB: TextView
 
+    // Preferências para salvar o tema
+    private var isDarkMode = false
+    private lateinit var prefs: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // pega as preferências salvas (pra lembrar o tema escolhido)
+        prefs = getSharedPreferences("config", MODE_PRIVATE)
+        isDarkMode = prefs.getBoolean("darkMode", false)
+
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
         setContentView(R.layout.activity_main) // usa o XML que você mostrou
 
         // Ligando os TextViews
@@ -37,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         val bLivreB: Button = findViewById(R.id.tiroLivreB)
 
         val bReiniciar: Button = findViewById(R.id.reiniciarPartida)
+        val bTrocarTema: Button = findViewById(R.id.trocarTema) // botão novo para mudar tema
 
         // Eventos de clique para o Time A
         bTresPontosA.setOnClickListener { adicionarPontos(3, "A") }
@@ -51,6 +69,20 @@ class MainActivity : AppCompatActivity() {
         // Reiniciar placar com popup personalizado
         bReiniciar.setOnClickListener {
             mostrarDialogoReiniciar()
+        }
+
+        // Alternar tema (claro/escuro)
+        bTrocarTema.setOnClickListener {
+            isDarkMode = !isDarkMode
+            prefs.edit().putBoolean("darkMode", isDarkMode).apply()
+
+            if (isDarkMode) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+
+            recreate()
         }
     }
 
@@ -76,19 +108,15 @@ class MainActivity : AppCompatActivity() {
 
     // Função para mostrar o diálogo personalizado
     private fun mostrarDialogoReiniciar() {
-        // Inflar o layout personalizado
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_reiniciar, null)
 
-        // Criar o builder do diálogo
         val builder = AlertDialog.Builder(this)
             .setView(dialogView)
             .setCancelable(true)
 
-        // Criar e configurar o diálogo
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        // Configurar os botões do diálogo personalizado
         val btnCancelar = dialogView.findViewById<Button>(R.id.btnCancelar)
         val btnConfirmar = dialogView.findViewById<Button>(R.id.btnConfirmar)
 
@@ -102,7 +130,6 @@ class MainActivity : AppCompatActivity() {
             dialog.dismiss()
         }
 
-        // Mostrar o diálogo
         dialog.show()
     }
 

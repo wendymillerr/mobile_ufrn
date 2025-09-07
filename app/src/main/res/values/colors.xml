@@ -5,4 +5,7 @@
     <color name="gray">#FFCCCCCC</color>
     <color name="red">#FFFF0000</color>
     <color name="purple_500">#FF6200EE</color>
+    <color name="blue_200">#90CAF9</color> <!-- azul claro -->
+    <color name="blue_500">#2196F3</color> <!-- azul padrão -->
+    <color name="blue_700">#1976D2</color> <!-- azul mais escuro -->
 </resources>
