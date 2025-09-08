@@ -5,7 +5,12 @@
     <color name="gray">#FFCCCCCC</color>
     <color name="red">#FFFF0000</color>
     <color name="purple_500">#FF6200EE</color>
+    <color name="purple_200">#CE93D8</color>
     <color name="blue_200">#90CAF9</color> <!-- azul claro -->
     <color name="blue_500">#2196F3</color> <!-- azul padrão -->
     <color name="blue_700">#1976D2</color> <!-- azul mais escuro -->
+    <color name="gray_900">#212121</color> <!-- fundo principal -->
+    <color name="gray_700">#808080</color> <!-- fundo secundário -->
+    <color name="gray_500">#9E9E9E</color> <!-- texto secundário -->
+    <color name="gray_light">#F5F5F5</color>
 </resources>
