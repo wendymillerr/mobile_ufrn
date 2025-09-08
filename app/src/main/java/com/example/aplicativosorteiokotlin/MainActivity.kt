@@ -56,12 +56,12 @@ class MainActivity : AppCompatActivity() {
         val bReiniciar: Button = findViewById(R.id.reiniciarPartida)
         val bTrocarTema: Button = findViewById(R.id.trocarTema) // botão novo para mudar tema
 
-        // Eventos de clique para o Time A
+        // clique para o Time A
         bTresPontosA.setOnClickListener { adicionarPontos(3, "A") }
         bDoisPontosA.setOnClickListener { adicionarPontos(2, "A") }
         bLivreA.setOnClickListener { adicionarPontos(1, "A") }
 
-        // Eventos de clique para o Time B
+        //  clique para o Time B
         bTresPontosB.setOnClickListener { adicionarPontos(3, "B") }
         bDoisPontosB.setOnClickListener { adicionarPontos(2, "B") }
         bLivreB.setOnClickListener { adicionarPontos(1, "B") }
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             mostrarDialogoReiniciar()
         }
 
-        // Alternar tema (claro/escuro)
+
         bTrocarTema.setOnClickListener {
             isDarkMode = !isDarkMode
             prefs.edit().putBoolean("darkMode", isDarkMode).apply()
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Função para adicionar pontos
+
     private fun adicionarPontos(pontos: Int, time: String) {
         if (time == "A") {
             pontuacaoTimeA += pontos
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Função para atualizar o placar
+
     private fun atualizarPlacar(time: String) {
         if (time == "A") {
             pTimeA.text = pontuacaoTimeA.toString()
@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Função para mostrar o diálogo personalizado
+
     private fun mostrarDialogoReiniciar() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_reiniciar, null)
 
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    // Função para reiniciar a partida
+
     private fun reiniciarPartida() {
         pontuacaoTimeA = 0
         pontuacaoTimeB = 0
