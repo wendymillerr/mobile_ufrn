@@ -16,6 +16,8 @@ class MainActivity : AppCompatActivity() {
     // Variáveis de pontuação
     private var pontuacaoTimeA: Int = 0
     private var pontuacaoTimeB: Int = 0
+    private var ultimaPontuacao: Int = 0
+    private var ultimoTime: String = ""
 
     // TextViews do placar
     private lateinit var pTimeA: TextView
@@ -53,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         val bDoisPontosB: Button = findViewById(R.id.doisPontosB)
         val bLivreB: Button = findViewById(R.id.tiroLivreB)
 
+        val bAnular: Button = findViewById(R.id.anularPonto)
         val bReiniciar: Button = findViewById(R.id.reiniciarPartida)
         val bTrocarTema: Button = findViewById(R.id.trocarTema) // botão novo para mudar tema
 
@@ -66,6 +69,8 @@ class MainActivity : AppCompatActivity() {
         bDoisPontosB.setOnClickListener { adicionarPontos(2, "B") }
         bLivreB.setOnClickListener { adicionarPontos(1, "B") }
 
+        //Anular último ponto registrado
+        bAnular.setOnClickListener { removerPontos(ultimaPontuacao, ultimoTime) }
         // Reiniciar placar com popup personalizado
         bReiniciar.setOnClickListener {
             mostrarDialogoReiniciar()
@@ -91,12 +96,50 @@ class MainActivity : AppCompatActivity() {
         if (time == "A") {
             pontuacaoTimeA += pontos
             atualizarPlacar("A")
+            Toast.makeText(this, "✅ Time A ganhou $pontos ponto(s)!", Toast.LENGTH_SHORT).show()
         } else {
             pontuacaoTimeB += pontos
             atualizarPlacar("B")
+            Toast.makeText(this, "✅ Time B ganhou $pontos ponto(s)!", Toast.LENGTH_SHORT).show()
         }
+        ultimaPontuacao = pontos
+        ultimoTime = time
     }
 
+    private fun removerPontos(pontos: Int, time: String) {
+        if (ultimaPontuacao != 0){
+            if (time == "A") {
+                pontuacaoTimeA -= pontos
+                atualizarPlacar("A")
+            } else {
+                pontuacaoTimeB -= pontos
+                atualizarPlacar("B")
+            }
+        } else{
+            mostrarDialogoImpossivelAnular()
+        }
+        ultimaPontuacao = 0
+    }
+
+
+    private fun mostrarDialogoImpossivelAnular() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_impossivelanular, null)
+
+        val builder = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+
+        val dialog = builder.create()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val btnOK = dialogView.findViewById<Button>(R.id.btnOK)
+
+        btnOK.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
 
     private fun atualizarPlacar(time: String) {
         if (time == "A") {
@@ -140,5 +183,6 @@ class MainActivity : AppCompatActivity() {
         pTimeA.text = "0"
         pTimeB.text = "0"
         Toast.makeText(this, "Placar reiniciado com sucesso!", Toast.LENGTH_SHORT).show()
+        ultimaPontuacao = 0
     }
 }
